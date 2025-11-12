@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -44,6 +46,27 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'notificationCount' => $request->user() ? $request->user()->unreadNotifications()->count() : null,
+                'unreadNotifications' => $request->user() ? $request->user()->unreadNotifications : null
+            ],
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+                'locationsall' => Cache::get('locationsall'),
+            ],
+            'site' => [
+                'current_project' => $request->session()->get('current_project_id') ?? 0,
+                'img_share' => img_share(),
+                'logo_dark' => logo_dark(),
+                'icon_dark' => icon_dark(),
+                'logo_white' => logo_white(),
+                'icon_white' => icon_white(),
+                'favicon' => favicon(),
+                'site_name' => get_site_name(),
+                'seo' => seo(),
+                'keywords' => keywords(),
+                'ccc' => get_c(),
+                'year' => Carbon::now()->year,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
