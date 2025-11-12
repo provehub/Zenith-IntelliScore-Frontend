@@ -1,11 +1,6 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
-// import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-// import DashboardStats from '@/Components/Provehub/DashboardStats.vue';
-// import PostProperty from '@/Components/Provehub/Buttons/PostProperty.vue';
-// import DonutOne from '@/Components/Provehub/Sha/Charts/DonutOne.vue';
-// import ActivityGoal from '@/Components/Provehub/Sha/Cards/ActivityGoal.vue';
 import { ref,computed } from 'vue';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
@@ -18,14 +13,6 @@ import {
 import { Button } from '@/components/ui/button'
 import ProjectSwitcher from '@/components/ours/ProjectSwitcher.vue';
 import ProjectStepper from '@/components/ours/ProjectStepper.vue';
-
-import DateRangePicker from '@/components/ours/DateRangePicker.vue'
-import MainNav from '@/components/ours/MainNav.vue'
-import Overview from '@/components/ours/Overview.vue'
-import RecentSales from '@/components/ours/RecentSales.vue'
-
-import Search from '@/components/ours/Search.vue'
-import UserNav from '@/components/ours/UserNav.vue'
 
 const props = defineProps({
   message: String,

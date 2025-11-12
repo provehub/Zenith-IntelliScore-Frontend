@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withProviders([
-        App\Providers\SocialServiceProvider::class, // ← add this
+        // App\Providers\SocialServiceProvider::class, // ← add this
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
