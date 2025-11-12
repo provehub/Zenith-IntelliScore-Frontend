@@ -135,6 +135,32 @@ if (!function_exists('seo')) {
     }
 }
 
+/* @function academic_session() */
+if (!function_exists('academic_session')) {
+    function academic_session()
+    {
+        $currentYear = Carbon::now()->year;
+        $nextYear = $currentYear + 1;
+        $academicSession = "$currentYear/$nextYear";
+
+        return $academicSession;
+    }
+}
+
+/* @function entrance_fee() */
+if (!function_exists('entrance_fee')) {
+    function entrance_fee()
+    {
+        $settings = Setting::all();
+            if (!empty($settings)) {
+                $entrance_fee = $settings->where('field', 'entrance_fee')->pluck('value')->first();
+                return $entrance_fee;
+            } else {
+                // handle the case where the settings are empty
+            }
+    }
+}
+
 /* @function keywords() */
 if (!function_exists('keywords')) {
     function keywords()
@@ -218,3 +244,14 @@ if (!function_exists('get_current_project')) {
         session()->get('current_project_id') ?? 0;      
     }
 }
+// if (!function_exists('get_current_project')) {
+//     function get_current_project()
+//     {
+//         if (Cache::has('current_project')) {
+//             $current_project = Cache::get('current_project');
+//             return $current_project;
+//         } else {
+//             return null;
+//         }        
+//     }
+// }

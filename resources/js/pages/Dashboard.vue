@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import ProjectSwitcher from '@/components/ours/ProjectSwitcher.vue';
 import ProjectStepper from '@/components/ours/ProjectStepper.vue';
 
