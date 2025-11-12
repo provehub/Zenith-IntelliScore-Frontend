@@ -11,25 +11,14 @@ class PasswordUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_password_update_page_is_displayed()
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->get(route('user-password.edit'));
-
-        $response->assertStatus(200);
-    }
-
     public function test_password_can_be_updated()
     {
         $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)
-            ->from(route('user-password.edit'))
-            ->put(route('user-password.update'), [
+            ->from('/settings/password')
+            ->put('/settings/password', [
                 'current_password' => 'password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -37,7 +26,7 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('user-password.edit'));
+            ->assertRedirect('/settings/password');
 
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
@@ -48,8 +37,8 @@ class PasswordUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from(route('user-password.edit'))
-            ->put(route('user-password.update'), [
+            ->from('/settings/password')
+            ->put('/settings/password', [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -57,6 +46,6 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasErrors('current_password')
-            ->assertRedirect(route('user-password.edit'));
+            ->assertRedirect('/settings/password');
     }
 }

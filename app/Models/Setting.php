@@ -3,10 +3,10 @@
 /**
  * Setting Model
  *
- *  Manage the Web Settings
+ *  Manage the Website Settings
  *
- * @package Zenith IntelliScore
- * @author Team Zenith IntelliScore
+ * @package ProveSchool
+ * @author ProveHub
  * @version 1.0.0
  */
 

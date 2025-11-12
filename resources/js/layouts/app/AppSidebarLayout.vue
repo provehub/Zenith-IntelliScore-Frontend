@@ -4,6 +4,8 @@ import AppShell from '@/components/AppShell.vue';
 import AppSidebar from '@/components/AppSidebar.vue';
 import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import type { BreadcrumbItemType } from '@/types';
+import FlashAlert from '@/Components/Provehub/FlashAlert.vue';
+
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
@@ -17,8 +19,9 @@ withDefaults(defineProps<Props>(), {
 <template>
     <AppShell variant="sidebar">
         <AppSidebar />
-        <AppContent variant="sidebar" class="overflow-x-hidden">
+        <AppContent variant="sidebar">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
+            <FlashAlert />
             <slot />
         </AppContent>
     </AppShell>

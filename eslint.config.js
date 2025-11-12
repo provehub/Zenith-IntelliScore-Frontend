@@ -1,4 +1,4 @@
-import prettier from 'eslint-config-prettier/flat';
+import prettier from 'eslint-config-prettier';
 import vue from 'eslint-plugin-vue';
 
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
@@ -13,6 +13,7 @@ export default defineConfigWithVueTs(
         rules: {
             'vue/multi-word-component-names': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            "vue/block-lang": "off",
         },
     },
     prettier,

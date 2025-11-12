@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { dashboard, login, register } from '@/routes';
 import { Head } from '@inertiajs/vue3';
 // import { Button } from '@/components/ui/button'
 import { ChartBarIcon, BoltIcon, UsersIcon, ShieldCheckIcon, CreditCardIcon } from '@heroicons/vue/24/outline'

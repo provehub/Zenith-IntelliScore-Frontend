@@ -67,8 +67,9 @@ class HandleInertiaRequests extends Middleware
                 'keywords' => keywords(),
                 'ccc' => get_c(),
                 'year' => Carbon::now()->year,
+                'academic_session' => academic_session(),
+                'entrance_fee' => entrance_fee(),
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }

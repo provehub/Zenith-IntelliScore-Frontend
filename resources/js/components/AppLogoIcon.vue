@@ -13,5 +13,5 @@ defineProps<Props>();
 </script>
 
 <template>
-   <img :src="$page.props.site.icon_dark" />
+    <img :src="$page.props.site.icon_dark" />
 </template>
