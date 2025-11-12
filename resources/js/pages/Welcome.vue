@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 // import { Button } from '@/components/ui/button'
 import { ChartBarIcon, BoltIcon, UsersIcon, ShieldCheckIcon, CreditCardIcon } from '@heroicons/vue/24/outline'
 import { defineComponent, h } from 'vue'
+import { ref } from 'vue'
 
 
 withDefaults(
@@ -14,6 +15,15 @@ withDefaults(
         canRegister: true,
     },
 );
+
+const navigation = [
+  { name: 'Home', href: '#' },
+  { name: 'Problem & Solution', href: '#' },
+  { name: 'How it Works', href: '#' },
+  { name: 'Impact', href: '#' },
+]
+
+const mobileMenuOpen = ref(false)
 
 const features = [
   {
@@ -73,24 +83,17 @@ const stats = [
   { id: 4, name: 'Compliance with data security standards', value: '100%' },
 ]
 
-const navigation = {
-  solutions: [
-    { name: 'Marketing', href: '#' },
-    { name: 'Analytics', href: '#' },
-    { name: 'Automation', href: '#' },
-    { name: 'Commerce', href: '#' },
-    { name: 'Insights', href: '#' },
-  ],
-  support: [
-    { name: 'Submit ticket', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
+const navigation2 = {
+  product: [
+    { name: 'Home', href: '#' },
+    { name: 'Problem & Solution', href: '#' },
+    { name: 'How It Works', href: '#' },
+    { name: 'Impact', href: '#' },
   ],
   company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Press', href: '#' },
+    { name: 'About Us', href: '#' },
+    { name: 'Contact', href: '#' },
+    { name: 'Careers', href: '#' },
   ],
   legal: [
     { name: 'Terms of service', href: '#' },
@@ -171,14 +174,60 @@ const navigation = {
 </script>
 
 <template>
-    <Head title="Welcome">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <Head title="Welcome to Zenith IntelliScore">
     </Head>
     
     <!-- <div>
         <Button>Button</Button>
     </div>   -->
+      <!-- HEADER -->
+    <header class="absolute inset-x-0 top-0 z-50">
+      <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <a href="#" class="-m-1.5 p-1.5">
+            <span class="sr-only">Your Company</span>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="" />
+          </a>
+        </div>
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400" @click="mobileMenuOpen = true">
+            <span class="sr-only">Open main menu</span>
+            <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm font-semibold leading-6 text-white">{{ item.name }}</a>
+        </div>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="#" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </nav>
+      <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
+        <div class="fixed inset-0 z-50" />
+        <DialogPanel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+          <div class="flex items-center justify-between">
+            <a href="#" class="-m-1.5 p-1.5">
+              <span class="sr-only">Your Company</span>
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="" />
+            </a>
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400" @click="mobileMenuOpen = false">
+              <span class="sr-only">Close menu</span>
+              <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/25">
+              <div class="space-y-2 py-6">
+                <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ item.name }}</a>
+              </div>
+              <div class="py-6">
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800">Log in</a>
+              </div>
+            </div>
+          </div>
+        </DialogPanel>
+      </Dialog>
+    </header>
 
      <!-- HERO -->
     <div class="relative isolate overflow-hidden bg-gray-900">
@@ -318,21 +367,13 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
    <footer class="bg-white">
     <div class="mx-auto max-w-7xl px-6 py-8 sm:py-24 lg:px-8 lg:py-32">
       <div class="mt-0 border-t border-white/10 pt-0 xl:grid xl:grid-cols-3 xl:gap-8">
-        <img class="h-9" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Company name" />
+        <img class="h-9" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Zenith IntelliScore" />
         <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
           <div class="md:grid md:grid-cols-2 md:gap-8">
             <div>
-              <h3 class="text-sm/6 font-semibold text-gray-900">Solutions</h3>
+              <h3 class="text-sm/6 font-semibold text-gray-900">Products</h3>
               <ul role="list" class="mt-6 space-y-4">
-                <li v-for="item in navigation.solutions" :key="item.name">
-                  <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
-                </li>
-              </ul>
-            </div>
-            <div class="mt-10 md:mt-0">
-              <h3 class="text-sm/6 font-semibold text-gray-900">Support</h3>
-              <ul role="list" class="mt-6 space-y-4">
-                <li v-for="item in navigation.support" :key="item.name">
+                <li v-for="item in navigation2.products" :key="item.name">
                   <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
                 </li>
               </ul>
@@ -342,7 +383,7 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
             <div>
               <h3 class="text-sm/6 font-semibold text-gray-900">Company</h3>
               <ul role="list" class="mt-6 space-y-4">
-                <li v-for="item in navigation.company" :key="item.name">
+                <li v-for="item in navigation2.company" :key="item.name">
                   <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
                 </li>
               </ul>
@@ -350,7 +391,7 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
             <div class="mt-10 md:mt-0">
               <h3 class="text-sm/6 font-semibold text-gray-900">Legal</h3>
               <ul role="list" class="mt-6 space-y-4">
-                <li v-for="item in navigation.legal" :key="item.name">
+                <li v-for="item in navigation2.legal" :key="item.name">
                   <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
                 </li>
               </ul>
@@ -360,7 +401,7 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
       </div>
       <div class="mt-12 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
         <div class="flex gap-x-6 md:order-2">
-          <a v-for="item in navigation.social" :key="item.name" :href="item.href" class="text-gray-900 hover:text-gray-600">
+          <a v-for="item in navigation2.social" :key="item.name" :href="item.href" class="text-gray-900 hover:text-gray-600">
             <span class="sr-only">{{ item.name }}</span>
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
           </a>
