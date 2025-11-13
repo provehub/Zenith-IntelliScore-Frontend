@@ -31,7 +31,7 @@ const form = useForm({
 })
 
 const steps = [
-  { step: 1, title: 'Your phone', description: 'Provide your main phone number' },
+  { step: 1, title: 'Your phone', description: 'Number linked to NIN & BVN' },
   { step: 2, title: 'Your NIN', description: 'Provide your NIN' },
   { step: 3, title: 'Your BVN', description: 'Provide your BVN' },
 ]

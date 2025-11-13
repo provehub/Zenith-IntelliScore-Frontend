@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Admin\{AdminController,SettingsController};
-use App\Http\Controllers\{MainController,ProjectController};
+use App\Http\Controllers\{MainController,ProjectController,LivenessController};
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -18,10 +18,18 @@ Route::get('user/dashboard', [MainController::class, 'userDashboard'])->middlewa
 // tests
 Route::get('tester', [ProjectController::class, 'tester']);
 
+Route::get('/verify/live/{vendor}/{extras}', [LivenessController::class, 'index'])->name('live.index');
+
+Route::get('/view/liveness/{vendor}/{extras}', [LivenessController::class, 'show'])->name('liveness.show');
+
+Route::post('/liveness', [LivenessController::class, 'store'])->name('create.liveness');
+
 // accounts
 Route::group(['prefix' => 'project', 'middleware' => ['auth']], function() {
     Route::post('store/new/project', [ProjectController::class, 'store'])->name('project.store');
     Route::post('process/new/verification', [ProjectController::class, 'verify'])->name('project.verify');
+
+    Route::post('process/pin/verification', [ProjectController::class, 'verifyPhone'])->name('pin.verify');
 });
 
 // miscs

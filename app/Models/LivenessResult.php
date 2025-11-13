@@ -11,7 +11,7 @@ class LivenessResult extends Model
 
     protected $fillable = [
         'extras',
-        'vendor_id',
+        'project_id',
         'age',
         'gender',
         'steps',

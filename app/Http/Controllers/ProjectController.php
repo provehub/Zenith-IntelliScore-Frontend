@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
-use App\Models\{Project,Plan,Personal};
+use App\Models\{Project,Plan,Personal,User};
 
 class ProjectController extends Controller
 {
@@ -27,6 +27,39 @@ class ProjectController extends Controller
         );
 
         return 'sent';
+    }
+
+
+    public function verifyPhone(Request $request)
+    {
+        
+        // dd($pin);
+
+        $checkData = Personal::where('user_id', Auth::id())->where('timezone',session()->get('current_project_id'))->first();
+        // dd($vendor->verif);
+
+        $pin = implode('', $request->input('pin'));
+
+      if($pin != $checkData->alternate_phone){
+            return redirect()->back()->with('error', 'The OTP code you entered is incorrect!');
+        }
+        $checkData->is_verified = 1;
+        $checkData->alternate_phone = null;
+        $checkData->save();
+
+        $user = User::where('id',$checkData->user_id)->first();
+
+        $url = [
+            'url' => route('live.index', ['vendor' => session()->get('current_project_id'), 'extras' => $checkData->phone]), 
+            'text' => 'Verify Now', 
+       ];
+
+        Mail::to($user->email)->send(new GeneralEmail('Zenith IntelliScore','Verify Your Liveness Check','In other to get started on Zenith IntelliScore, you need to verify if you are real or not. Ensure you have a device with nice camera and bright environment.',$url));
+        
+
+        return redirect()->back()->with('success', 'Complete Your AI liveness profile below, the data will be saved to continue your credit scoring!');
+
+        // return redirect()->back()->with('success', 'Your AI liveness profile was created, the data has been saved to continue your credit scoring!');
     }
 
      /**
@@ -59,8 +92,8 @@ class ProjectController extends Controller
         // Save user
         $personals = new Personal();
         $personals->user_id = Auth::id();
-        $personals->phone = $ver;
-        $personals->alternate_phone = $phone;
+        $personals->phone = $phone;
+        $personals->alternate_phone = $ver;
         $personals->first_name = $request->nin;
         $personals->last_name = $request->bvn;
         $personals->timezone = session()->get('current_project_id');

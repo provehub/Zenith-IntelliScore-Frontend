@@ -27,9 +27,9 @@ const handleComplete = (arr) => {
 // Submit handler
 const onSubmit = () => {
   if (form.pin.some((val) => val === '')) {
-    toast({ title: 'Please complete the PIN input' })
     return
   }
+
 
   // You can send to backend via Inertia
   form.post(route('pin.verify'), {

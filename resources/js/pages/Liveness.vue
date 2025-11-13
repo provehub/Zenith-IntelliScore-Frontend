@@ -9,7 +9,7 @@ const props = defineProps({
 
 const videoRef = ref(null)
 const canvasRef = ref(null)
-const statusMsg = ref('Click "Start Liveness"')
+const statusMsg = ref('Click "Start AI Liveness"')
 const livenessPassed = ref(false)
 const loading = ref(true)
 const livenessStep = ref(parseInt(localStorage.getItem('liveness_step') || '0'))
@@ -32,7 +32,7 @@ const loadModels = async () => {
   await faceapi.nets.faceLandmark68Net.load('/models/')
   await faceapi.nets.ageGenderNet.load('/models/')
   loading.value = false
-  statusMsg.value = "Click 'Start Liveness' to begin."
+  statusMsg.value = "Click 'Start AI Liveness' to begin."
 }
 
 onMounted(loadModels)
@@ -53,7 +53,7 @@ const drawOverlay = (detection) => {
   const ovalH = canvas.height * 0.48   // about 96% of height, adjust as needed
 
   ctx.save()
-  ctx.strokeStyle = '#60a5fa'
+  ctx.strokeStyle = '#B22222'
   ctx.lineWidth = 4
   ctx.globalAlpha = 0.7
   ctx.beginPath()
@@ -122,8 +122,8 @@ function dataURLtoFile(dataurl, filename) {
 
 
   const form = useForm({
-    vendor_id: props.vendor.id,
-    extras: props.vendor.extras,
+    project_id: props.vendor.id,
+    extras: props.vendor.id,
     age: null,
     gender: null,
     steps: ['mouth_open', 'turn_left', 'turn_right'],
@@ -221,7 +221,7 @@ const startLiveness = async () => {
     } else {
       detectedAge.value = null
       detectedGender.value = null
-      if (!livenessPassed.value) statusMsg.value = "Align your face in the blue oval"
+      if (!livenessPassed.value) statusMsg.value = "Align your face in the red oval"
       drawOverlay(null)
     }
   }, 250)
@@ -241,8 +241,8 @@ const startLiveness = async () => {
           <div
             :class="[
               'w-8 h-8 flex items-center justify-center rounded-full text-xl font-bold',
-              livenessStep > idx || livenessPassed ? 'bg-green-500 text-white' :
-              livenessStep === idx ? 'bg-blue-500 text-white animate-pulse' : 'bg-gray-200 text-gray-500'
+              livenessStep > idx || livenessPassed ? 'bg-gray-500 text-white' :
+              livenessStep === idx ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-200 text-gray-500'
             ]"
           >
             {{ step.icon }}
@@ -258,21 +258,21 @@ const startLiveness = async () => {
     </div>
 
     <button
-      class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold mb-4 w-full"
+      class="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded-xl font-semibold mb-4 w-full"
       :disabled="loading || livenessPassed || showVerifying"
       @click="startLiveness"
     >
-      {{ loading ? 'Loading Models...' : (livenessPassed ? 'Checks Complete' : 'Start Liveness') }}
+      {{ loading ? 'Loading Models...' : (livenessPassed ? 'Checks Complete' : 'Start AI Liveness') }}
     </button>
     <!-- <button v-if="livenessStep > 0 && !livenessPassed && !showVerifying"
-      class="mb-2 text-blue-700 underline" @click="resetProgress">
+      class="mb-2 text-red-700 underline" @click="resetProgress">
       Restart Check
     </button> -->
 
     <div class="mb-3 text-center font-medium text-gray-700 min-h-[2em]">
       <span v-if="!showVerifying">{{ statusMsg }}</span>
       <span v-if="showVerifying" class="flex items-center justify-center gap-2">
-        <svg class="animate-spin h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10"
             stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor"
@@ -316,7 +316,7 @@ const startLiveness = async () => {
       </div>
     </div>
 
-    <div v-if="livenessPassed" class="mt-4 text-green-700 font-bold text-lg">
+    <div v-if="livenessPassed" class="mt-4 text-gray-700 font-bold text-lg">
       🎉 Liveness Passed!
     </div>
     <div v-if="livenessPassed && detectedAge && detectedGender"

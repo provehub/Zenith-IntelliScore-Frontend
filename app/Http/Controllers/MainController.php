@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\{Payment,User,Project};
+use App\Models\{Payment,User,Project,Personal};
 
 class MainController extends Controller
 {
@@ -47,9 +47,37 @@ class MainController extends Controller
             }
         }
 
+        $personal = 0;
+        $pro = 0;
+
+        $checkData = Personal::where('user_id', Auth::id())
+            ->where('timezone', session('current_project_id'))
+            ->first();
+
+        if ($checkData) {
+            $personal = match (true) {
+                !empty($checkData->alternate_phone) && $checkData->is_verified == 0 => 1,
+                empty($checkData->alternate_phone) && $checkData->is_verified == 1 => 2,
+                default => 0,
+            };
+        }
+
+        $proCheck = Project::find(optional($checkData)->timezone);
+
+        if ($proCheck && $proCheck->status == 3) {
+            $pro = 3;
+            $personal = 3;
+        }
+
+        // return $personal;
+
+
         return inertia('Dashboard', [
             'info'    => 'Dashboard',
             'project' => $projects, // send all projects to frontend
+            'personal' => $personal, // send all personals to frontend
+            'pro' => $pro, // send all single project to frontend
+            'procheck' => $proCheck, // send all single project to frontend
         ]);
     }
 

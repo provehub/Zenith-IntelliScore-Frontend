@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{LivenessResult,Vendor};
+use App\Models\{LivenessResult,Project};
 
 
 class LivenessController extends Controller
@@ -11,7 +11,7 @@ class LivenessController extends Controller
 
     public function show($vendor, $extras)
     {
-        $results = LivenessResult::where('vendor_id', $vendor)
+        $results = LivenessResult::where('project_id', $vendor)
             ->where('extras', $extras)
             ->first();
 
@@ -25,14 +25,14 @@ class LivenessController extends Controller
 
     public function index(Request $request, $vendor, $extras){ 
         return inertia('Liveness',[
-            'vendor' => Vendor::where('id',$vendor)->where('extras',$extras)->first(),
+            'vendor' => Project::where('id',$vendor)->first(),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'vendor_id' => 'required|numeric',
+            'project_id' => 'required|numeric',
             'extras' => 'nullable',
             'age' => 'nullable|numeric', // for AI verification side
             'gender' => 'nullable|string', // for AI verification side
@@ -50,7 +50,7 @@ class LivenessController extends Controller
         // Use updateOrCreate: checks for vendor_id + extras combo
         $result = LivenessResult::updateOrCreate(
             [
-                'vendor_id' => $validated['vendor_id'],
+                'project_id' => $validated['project_id'],
                 'extras' => $validated['extras'],
             ],
             [
@@ -62,7 +62,7 @@ class LivenessController extends Controller
         );
 
         // Optional: Update vendor status
-        $vendor = Vendor::where('id', $validated['vendor_id'])->first();
+        $vendor = Project::where('id', $validated['project_id'])->first();
         if ($vendor) {
             $vendor->status = 3;
             $vendor->save();

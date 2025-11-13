@@ -13,10 +13,14 @@ import {
 import ProjectSwitcher from '@/components/ours/ProjectSwitcher.vue';
 import ProjectSMSPin from '@/components/ours/ProjectSMSPin.vue';
 import ProjectStepper from '@/components/ours/ProjectStepper.vue';
+import ProjectStartLivenes from '@/components/ours/ProjectStartLivenes.vue';
 
 const props = defineProps({
   message: String,
   project: { type: [Array, Object, null], default: null },
+  procheck: { type: [Array, Object, null], default: null },
+  personal: { type: [Number, null], default: null },
+  pro: { type: [Number, null], default: null },
 })
 
 // Always work with an array in the template
@@ -64,8 +68,17 @@ const breadcrumbs = ref([
       <div class="flex-1 space-y-4 px-4 py-6 sm:px-6 sm:pt-6 lg:px-8">
         <!-- Page header -->
         <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl" v-if="personal == 3">
+            Do your AI Liveness Check
+          </h2>
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl" v-if="personal == 2">
             Dashboard
+          </h2>
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl" v-if="personal == 1">
+            Verify BVN and NIN
+          </h2>
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl" v-if="personal == 0">
+            Provide Personal Information for AI verification
           </h2>
 
           <div class="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
@@ -74,14 +87,21 @@ const breadcrumbs = ref([
           </div>
         </div>
 
+        
         <!-- steper -->
-         <ProjectSMSPin :project="project" />
+         <ProjectStepper v-if="personal == 0" :project="project" />
         <!-- steper -->
-        <!-- steper -->
-         <ProjectStepper :project="project" />
-        <!-- steper -->
+
+        <!-- sms -->
+         <ProjectSMSPin v-if="personal == 1" :project="project" />
+        <!-- sms -->
+
+        <!-- sms -->
+         <ProjectStartLivenes v-if="pro == 3" :project="procheck" />
+        <!-- sms -->
+
         <!-- Tabs -->
-        <Tabs default-value="overview" class="space-y-4">
+        <Tabs default-value="overview" class="space-y-4" v-if="personal == 2 && pro != 3">
           <!-- Make tabs horizontally scrollable on mobile -->
           <!-- <div class="w-full overflow-x-auto">
             <TabsList class="inline-flex min-w-max">
