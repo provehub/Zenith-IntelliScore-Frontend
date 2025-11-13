@@ -34,8 +34,8 @@ class LivenessController extends Controller
         $validated = $request->validate([
             'vendor_id' => 'required|numeric',
             'extras' => 'nullable',
-            'age' => 'nullable|numeric',
-            'gender' => 'nullable|string',
+            'age' => 'nullable|numeric', // for AI verification side
+            'gender' => 'nullable|string', // for AI verification side
             'steps' => 'required|array',
             'snapshots.*' => 'nullable|image|max:2048', // as images
         ]);
@@ -54,8 +54,8 @@ class LivenessController extends Controller
                 'extras' => $validated['extras'],
             ],
             [
-                'age' => $validated['age'],
-                'gender' => $validated['gender'],
+                'age' => $validated['age'], // for AI verification side
+                'gender' => $validated['gender'], // for AI verification side
                 'steps' => $validated['steps'],
                 'snapshots' => $paths,
             ]
