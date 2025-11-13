@@ -20,33 +20,52 @@ import {
   StepperTrigger,
 } from '@/components/ui/stepper'
 import { toast } from '@/components/ui/toast'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
+import { useToast } from '@/components/ui/toast/use-toast'
+
+const { toast } = useToast()
+
+const showErrorToast = () => {
+  toast({
+    title: 'Uh oh! Something went wrong.',
+    description: 'There was a problem with your request.',
+    variant: 'destructive',
+    action: {
+      label: 'Try again',
+      altText: 'Try again',
+      onClick: () => {
+        // Optional: retry logic
+        toast({
+          title: 'Retrying...',
+          description: 'We’re attempting your request again.',
+        })
+      },
+    },
+  })
+}
 
 const stepIndex = ref(1)
 
 const form = useForm({
-  fullName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  favoriteDrink: '',
+  phone: '',
+  nin: '',
+  bvn: '',
 })
 
 const steps = [
-  { step: 1, title: 'Your details', description: 'Provide your name and email' },
-  { step: 2, title: 'Your password', description: 'Choose a password' },
-  { step: 3, title: 'Your favorite drink', description: 'Choose a drink' },
+  { step: 1, title: 'Your phone', description: 'Provide your main phone number' },
+  { step: 2, title: 'Your NIN', description: 'Provide your NIN' },
+  { step: 3, title: 'Your BVN', description: 'Provide your BVN' },
 ]
 
 const onSubmit = () => {
-  if (form.password !== form.confirmPassword) {
-    toast({ title: 'Passwords must match!' })
-    return
-  }
 
-  form.post(route('project.store'), {
+  form.post(route('project.verify'), {
     preserveScroll: true,
     onSuccess: () => {
-      toast({ title: 'Form submitted successfully!' })
+      showErrorToast()
       form.reset()
       stepIndex.value = 1
     },
@@ -107,62 +126,29 @@ const onSubmit = () => {
       <!-- Step 1 -->
       <div v-if="stepIndex === 1" class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700">Full Name</label>
-          <input
-            v-model="form.fullName"
-            type="text"
-            class="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm focus:border-primary focus:ring focus:ring-primary/30"
-          />
-          <div v-if="form.errors.fullName" class="text-red-500 text-sm mt-1">{{ form.errors.fullName }}</div>
+          <div class="space-y-2">
+            <Label for="name">Phone number</Label>
+            <Input id="name" placeholder="e.g. 08037099011" v-model="form.phone" required />
+          </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            v-model="form.email"
-            type="email"
-            class="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm focus:border-primary focus:ring focus:ring-primary/30"
-          />
-          <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</div>
-        </div>
       </div>
 
       <!-- Step 2 -->
       <div v-if="stepIndex === 2" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
-          <input
-            v-model="form.password"
-            type="password"
-            class="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm focus:border-primary focus:ring focus:ring-primary/30"
-          />
-        </div>
+        <div class="space-y-2">
+            <Label for="name">Phone NIN</Label>
+            <Input id="name" placeholder="e.g. 1234567890" v-model="form.nin" required />
+          </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-          <input
-            v-model="form.confirmPassword"
-            type="password"
-            class="mt-1 w-full rounded-md border border-gray-300 p-2 text-sm focus:border-primary focus:ring focus:ring-primary/30"
-          />
-        </div>
       </div>
 
       <!-- Step 3 -->
       <div v-if="stepIndex === 3" class="space-y-4">
-        <label class="block text-sm font-medium text-gray-700">Favorite Drink</label>
-        <Select v-model="form.favoriteDrink">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="Select a drink" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="coffee">Coffee</SelectItem>
-              <SelectItem value="tea">Tea</SelectItem>
-              <SelectItem value="soda">Soda</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <div class="space-y-2">
+            <Label for="name">Phone BVN</Label>
+            <Input id="name" placeholder="e.g. 1234567890" v-model="form.bvn" required />
+          </div>
       </div>
 
       <!-- Buttons -->

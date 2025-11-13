@@ -4,7 +4,6 @@ namespace App\Services;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
-use App\Models\{Listing, ListingImage};
 
 class SmsService
 {

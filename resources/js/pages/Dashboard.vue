@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import ProjectSwitcher from '@/components/ours/ProjectSwitcher.vue';
+import ProjectSMSPin from '@/components/ours/ProjectSMSPin.vue';
 import ProjectStepper from '@/components/ours/ProjectStepper.vue';
 
 const props = defineProps({
@@ -73,6 +74,9 @@ const breadcrumbs = ref([
           </div>
         </div>
 
+        <!-- steper -->
+         <ProjectSMSPin :project="project" />
+        <!-- steper -->
         <!-- steper -->
          <ProjectStepper :project="project" />
         <!-- steper -->
