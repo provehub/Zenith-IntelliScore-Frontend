@@ -9,7 +9,7 @@ use App\Http\Controllers\{MainController,ProjectController};
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
-})->name('home');
+})->name('index');
 
 Route::get('dashboard', [MainController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
