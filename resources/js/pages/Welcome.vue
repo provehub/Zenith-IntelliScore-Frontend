@@ -1,10 +1,9 @@
 <script setup lang="js">
-import { dashboard, login, register } from '@/routes';
 import { Head } from '@inertiajs/vue3';
-// import { Button } from '@/components/ui/button'
 import { ChartBarIcon, BoltIcon, UsersIcon, ShieldCheckIcon, CreditCardIcon } from '@heroicons/vue/24/outline'
 import { defineComponent, h } from 'vue'
 import ApplicationLogoWhite from '@/Components/ApplicationLogoWhite.vue';
+import { CloudArrowUpIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
 
@@ -72,6 +71,25 @@ const features2 = [
     description:
       'Data security and regulatory compliance are at the core of every decision.',
     icon: ShieldCheckIcon,
+  },
+]
+
+const features3 = [
+  {
+    name: 'Data Ingestion API',
+    description:
+      'Connect telecom, utility, and wallet data with zero hassle. Our API gathers real-time inputs for accurate credit assessment.',
+    icon: CloudArrowUpIcon,
+  },
+  {
+    name: 'Scoring API',
+    description: 'Return IntelliScore & default probability in milliseconds. Deliver instant, data-driven credit decisions to your customers.',
+    icon: CloudArrowUpIcon,
+  },
+  {
+    name: 'Explainability API',
+    description: 'Provide transparent insights into model decisions. Understand why a score was generated, boosting trust and compliance.',
+    icon: CloudArrowUpIcon,
   },
 ]
 
@@ -186,7 +204,6 @@ const navigation2 = {
           <a href="#" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
             <ApplicationLogoWhite class="h-8 w-auto" alt="Zenith IntelliScore" />
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="" />
           </a>
         </div>
         <div class="flex lg:hidden">
@@ -208,7 +225,7 @@ const navigation2 = {
           <div class="flex items-center justify-between">
             <a href="#" class="-m-1.5 p-1.5">
               <span class="sr-only">Your Company</span>
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="" />
+              <ApplicationLogoWhite class="h-8 w-auto" alt="Zenith IntelliScore" />
             </a>
             <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400" @click="mobileMenuOpen = false">
               <span class="sr-only">Close menu</span>
@@ -247,13 +264,13 @@ const navigation2 = {
     </div>
     <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
       <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
-        <!-- <img class="h-11" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=500" alt="Your Company" /> -->
+        <ApplicationLogoWhite class="h-8 w-auto" alt="Zenith IntelliScore" />
         Zenith IntelliScore
         <div class="mt-0 sm:mt-32 lg:mt-16">
           <a href="#" class="inline-flex space-x-6">
-            <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-red-500 ring-1 ring-inset ring-red-500/20">What's new</span>
+            <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-red-500 ring-1 ring-inset ring-red-500/20">Introducing IntelliScore</span>
             <span class="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
-              <span>Just shipped v1.0</span>
+              <span>Version 1.0 is Live</span>
               <ChevronRightIcon class="h-5 w-5 text-gray-500" aria-hidden="true" />
             </span>
           </a>
@@ -330,6 +347,48 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
     </div>
   </div>
 
+
+  <!-- API SECTION -->
+  <div class="overflow-hidden bg-gray-900 py-8 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+        <div class="lg:pr-8 lg:pt-4">
+          <div class="lg:max-w-lg">
+            <h2 class="text-base font-semibold leading-7 text-red-500">Seamless Integration</h2>
+            <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Powerful API for Smarter Credit Decisions</p>
+            <p class="mt-6 text-lg leading-8 text-gray-300">Seamlessly integrate credit intelligence into your platform—fast, transparent, and reliable.</p>
+            <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-300 lg:max-w-none">
+              <div v-for="feature in features3" :key="feature.name" class="relative pl-9">
+                <dt class="inline font-semibold text-white">
+                  <component :is="feature.icon" class="absolute left-1 top-1 h-5 w-5 text-red-500" aria-hidden="true" />
+                  {{ feature.name }}
+                </dt>
+                {{ ' ' }}
+                <dd class="inline">{{ feature.description }}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <!-- <img src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="Product screenshot" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-white/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" width="2432" height="1442" /> -->
+        <pre class="bg-gray-100 p-4 pt-20 rounded-lg overflow-x-auto font-mono text-gray-600">
+          {
+            "customer_id": "12345",
+            "intelliScore": 720,
+            "defaultProbability": 0.04,
+            "factors": {
+              "telecom": "good",
+              "utility": "average",
+              "wallet": "excellent"
+            }
+          }
+        </pre>   
+      </div>
+      <div class="mt-8">
+              <a href="#" class="inline-flex rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Request API Access</a>
+      </div>
+    </div>
+  </div>
+
   <!-- IMPACT METRICS -->
    <div class="bg-white py-8 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -357,7 +416,7 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
       </div>
       
       <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-        <a href="#" class="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Get started</a>
+        <a href="#" class="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Get started</a>
         <a href="#" class="text-sm font-semibold leading-6 text-gray-300">Learn more <span aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -368,12 +427,12 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
     <div class="mx-auto max-w-7xl px-6 py-8 sm:py-24 lg:px-8 lg:py-32">
       <div class="mt-0 border-t border-white/10 pt-0 xl:grid xl:grid-cols-3 xl:gap-8">
         <img class="h-9" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Zenith IntelliScore" />
-        <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+        <!-- <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
           <div class="md:grid md:grid-cols-2 md:gap-8">
             <div>
               <h3 class="text-sm/6 font-semibold text-gray-900">Products</h3>
               <ul role="list" class="mt-6 space-y-4">
-                <li v-for="item in navigation2.products" :key="item.name">
+                <li v-for="item in navigation2.product" :key="item.name">
                   <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
                 </li>
               </ul>
@@ -397,7 +456,41 @@ Empowering banks to lend smarter and individuals to access fair credit, transpar
               </ul>
             </div>
           </div>
+        </div> -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 xl:col-span-2 xl:mt-0">
+  
+          <!-- Product -->
+        <div>
+          <h3 class="text-sm/6 font-semibold text-gray-900">Product</h3>
+          <ul role="list" class="mt-6 space-y-4">
+            <li v-for="item in navigation2.product" :key="item.name">
+              <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
+            </li>
+          </ul>
         </div>
+
+        <!-- Company -->
+        <div>
+          <h3 class="text-sm/6 font-semibold text-gray-900">Company</h3>
+          <ul role="list" class="mt-6 space-y-4">
+            <li v-for="item in navigation2.company" :key="item.name">
+              <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h3 class="text-sm/6 font-semibold text-gray-900">Legal</h3>
+          <ul role="list" class="mt-6 space-y-4">
+            <li v-for="item in navigation2.legal" :key="item.name">
+              <a :href="item.href" class="text-sm/6 text-gray-900 hover:text-gray-600">{{ item.name }}</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
       </div>
       <div class="mt-12 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
         <div class="flex gap-x-6 md:order-2">
