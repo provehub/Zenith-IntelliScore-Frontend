@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\GeneralEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use App\Models\{Project,Plan,Personal};
 
@@ -35,6 +37,7 @@ class ProjectController extends Controller
      */
     public function verify(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'phone' => 'required',
             'nin' => 'required',
@@ -51,16 +54,30 @@ class ProjectController extends Controller
             $phone = '+' . $phone;
         }
 
+        $ver = rand(10000, 99999);
+
         // Save user
         $personals = new Personal();
-        $personals->phone = $phone;
+        $personals->user_id = Auth::id();
+        $personals->phone = $ver;
+        $personals->alternate_phone = $phone;
         $personals->first_name = $request->nin;
         $personals->last_name = $request->bvn;
         $personals->timezone = session()->get('current_project_id');
         $personals->save();
 
-        // OTP
-        $ver = rand(10000, 99999);
+        // OTP - email
+        $user = Auth::user();
+
+        $url = [
+            'url' => 'https://zenithintelliscore.com/', 
+            'text' => 'Verify Now', 
+       ];
+        // OTP - email
+        Mail::to($user->email)->send(new GeneralEmail('Zenith IntelliScore','Verify to proceed','In other to get started on Zenith IntelliScore, you need to verify.: '.$ver,$url));
+
+        // OTP - sms
+        
         $client = new \Twilio\Rest\Client(env('TWILIO_SID'), env('TWILIO_TOKEN'));
 
         $client->messages->create(
@@ -70,6 +87,8 @@ class ProjectController extends Controller
                 'body' => 'Your ZIS Verification Pin is '.$ver.' It expires in 90 minutes. ZIS'
             ]
         );
+
+        
 
         return redirect()->back()->with('success', 'We have sent a 5-digit PIN to your phone number.');
     }
@@ -106,5 +125,9 @@ class ProjectController extends Controller
         $request->session()->put('current_project_id', $project->id);
 
         return 'Done';
+    }
+
+    public function loadPlans(){
+        return Plan::get();
     }
 }

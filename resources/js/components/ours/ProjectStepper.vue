@@ -19,32 +19,8 @@ import {
   StepperTitle,
   StepperTrigger,
 } from '@/components/ui/stepper'
-import { toast } from '@/components/ui/toast'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-import { useToast } from '@/components/ui/toast/use-toast'
-
-const { toast } = useToast()
-
-const showErrorToast = () => {
-  toast({
-    title: 'Uh oh! Something went wrong.',
-    description: 'There was a problem with your request.',
-    variant: 'destructive',
-    action: {
-      label: 'Try again',
-      altText: 'Try again',
-      onClick: () => {
-        // Optional: retry logic
-        toast({
-          title: 'Retrying...',
-          description: 'We’re attempting your request again.',
-        })
-      },
-    },
-  })
-}
 
 const stepIndex = ref(1)
 
@@ -65,7 +41,6 @@ const onSubmit = () => {
   form.post(route('project.verify'), {
     preserveScroll: true,
     onSuccess: () => {
-      showErrorToast()
       form.reset()
       stepIndex.value = 1
     },

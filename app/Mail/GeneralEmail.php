@@ -28,9 +28,9 @@ class GeneralEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('support@Zenith IntelliScore.ng', 'Zenith IntelliScore'),
+            from: new Address('support@brickgpt.com', 'Zenith IntelliScore'),
             replyTo: [
-                new Address('noreply@Zenith IntelliScore.ng', 'Zenith IntelliScore'),
+                new Address('support@brickgpt.com', 'Zenith IntelliScore'),
             ],
             subject: $this->subject,
         );
