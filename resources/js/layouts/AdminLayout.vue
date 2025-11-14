@@ -43,24 +43,6 @@ const flashError = computed(
             <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                 Dash
             </NavLink>
-            <NavLink :href="route('admin.agents')" :active="route().current('admin.agents')">
-                Agents
-            </NavLink>
-            <NavLink :href="route('admin.blogs')" :active="route().current('admin.blogs')">
-                Blog
-            </NavLink>
-            <NavLink :href="route('admin.category')" :active="route().current('admin.category')">
-                Category
-            </NavLink>
-            <NavLink :href="route('admin.listings')" :active="route().current('admin.listings')">
-                Listings
-            </NavLink>
-            <NavLink :href="route('admin.promotions')" :active="route().current('admin.promotions')">
-                Promotions
-            </NavLink>
-            <NavLink :href="route('admin.settings')" :active="route().current('admin.settings')">
-                Settings
-            </NavLink>
         </div>
 
     </div>
@@ -122,30 +104,6 @@ const flashError = computed(
 <div class="pt-2 pb-3 space-y-1">
     <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('dashboard')">
         Dash
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.agents')" :active="route().current('admin.agents')">
-        Agents
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.blogs')" :active="route().current('admin.blogs')">
-        Blogs
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.category')" :active="route().current('admin.category')">
-        Category
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.listings')" :active="route().current('admin.listings')">
-        Listings
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.promotions')" :active="route().current('admin.promotions')">
-        Promotions
-    </ResponsiveNavLink>
-
-    <ResponsiveNavLink :href="route('admin.settings')" :active="route().current('admin.settings')">
-        Settings
     </ResponsiveNavLink>
 
 </div>

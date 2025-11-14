@@ -49,9 +49,9 @@ const mainNavItems = [
   // },
   {
     provehub: 'social',
-    title: 'Social Media Settings',
-    href: '/social/settings',
-    icon: CogIcon,
+    title: 'Upload Data',
+    href: '/project/upload/data',
+    icon: BrickWallIcon,
   },
   // {
   //   provehub: 'dev',

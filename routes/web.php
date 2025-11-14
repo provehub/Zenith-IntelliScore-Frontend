@@ -5,11 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Admin\{AdminController,SettingsController};
-use App\Http\Controllers\{MainController,ProjectController,LivenessController};
+use App\Http\Controllers\{MainController,ProjectController,LivenessController,StatementController};
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('index');
+Route::get('/', [MainController::class, 'index'])->name('index');
 
 Route::get('dashboard', [MainController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -24,12 +22,22 @@ Route::get('/view/liveness/{vendor}/{extras}', [LivenessController::class, 'show
 
 Route::post('/liveness', [LivenessController::class, 'store'])->name('create.liveness');
 
+Route::post('upload/bank/data', [StatementController::class, 'upload'])->name('upload.bank');
 // accounts
 Route::group(['prefix' => 'project', 'middleware' => ['auth']], function() {
+    Route::get('upload/data', [ProjectController::class, 'uploadData'])->name('upload.data');
+    
     Route::post('store/new/project', [ProjectController::class, 'store'])->name('project.store');
     Route::post('process/new/verification', [ProjectController::class, 'verify'])->name('project.verify');
 
     Route::post('process/pin/verification', [ProjectController::class, 'verifyPhone'])->name('pin.verify');
+});
+
+// admin
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth',]], function() {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('all/accounts', [AdminController::class, 'agents'])->name('admin.agents');
 });
 
 // miscs

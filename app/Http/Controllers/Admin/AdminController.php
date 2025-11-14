@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\{ListingService,CourseService};
-use App\Models\{User,SchoolClass,Exam,Question,Admission,StudentParent,Student,Payment,Teacher,Personal,TeacherClass,ClassSubject,TeacherSubject,Timetable,StudentExam,SchoolClassSubject,StudentClass,Category,SubCategory,Listing,ListingImage,Vendor,Promotion};
+use App\Models\{User,Project,Personal};
 
 class AdminController extends Controller
 {
@@ -128,7 +128,7 @@ class AdminController extends Controller
     {
         return inertia('Admin/Vendors/Vendors',[
             'message'=>'Agents',
-            'vendors' => Vendor::where('status','!=',2)->paginate(9)->withQueryString(),
+            'vendors' => Project::paginate(9)->withQueryString(),
         ]);
     }
 
@@ -202,67 +202,6 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Image was deleted!');
     }
 
-    public function destroyUser(Request $request, User $user)
-    {
-        // 1. Delete all listing images and reviews for user's listings
-        $userListings = \App\Models\Listing::where('user_id', $user->id)->pluck('id');
-        \App\Models\ListingImage::whereIn('listing_id', $userListings)->delete();
-        \App\Models\ListingReview::whereIn('listing_id', $userListings)->delete();
-        \App\Models\ListingReview::where('user_id', $user->id)->delete();
-
-        // 2. Delete listings
-        \App\Models\Listing::where('user_id', $user->id)->delete();
-
-        // 3. Courses and dependencies
-        $userCourses = \App\Models\Course::where('user_id', $user->id)->pluck('id');
-        \App\Models\CourseImage::whereIn('course_id', $userCourses)->delete();
-        \App\Models\CourseLesson::whereIn('course_id', $userCourses)->delete();
-        \App\Models\CourseReview::whereIn('course_id', $userCourses)->delete();
-        \App\Models\Course::where('user_id', $user->id)->delete();
-
-        // 5. Students and dependencies
-        $userStudents = \App\Models\Student::where('user_id', $user->id)->pluck('id');
-        \App\Models\StudentClass::whereIn('student_id', $userStudents)->delete();
-        \App\Models\StudentExam::whereIn('student_id', $userStudents)->delete();
-        \App\Models\StudentParent::whereIn('student_id', $userStudents)->delete();
-        \App\Models\StudentPayment::whereIn('student_id', $userStudents)->delete();
-        \App\Models\Student::where('user_id', $user->id)->delete();
-
-        // 6. Teachers and dependencies
-        $userTeachers = \App\Models\Teacher::where('user_id', $user->id)->pluck('id');
-        \App\Models\TeacherClass::whereIn('teacher_id', $userTeachers)->delete();
-        \App\Models\TeacherSubject::whereIn('teacher_id', $userTeachers)->delete();
-        \App\Models\Teacher::where('user_id', $user->id)->delete();
-
-        // 7. Direct user-linked models
-        \App\Models\Attendance::where('user_id', $user->id)->delete();
-        \App\Models\Blog::where('user_id', $user->id)->delete();
-        \App\Models\Notification::where('notifiable_id', $user->id)->delete();
-        \App\Models\Personal::where('user_id', $user->id)->delete();
-        \App\Models\Quiz::where('user_id', $user->id)->delete();
-        \App\Models\QuizQuestion::where('user_id', $user->id)->delete();
-
-
-        $userMessages = \App\Models\Message::where('user_id', $user->id)->get();
-
-        foreach ($userMessages as $message) {
-            // 2. Delete all message images
-            $message->images()->delete();
-
-            // 3. Delete all calls related to this message
-            $message->calls()->delete();
-
-            // 4. Delete the message itself
-            $message->delete();
-        }
-
-        \App\Models\Chat::where('user_id', $user->id)->delete();
-
-        // 8. Delete the user last
-        $user->delete();
-
-        return redirect()->back()->with('success', 'User and related data deleted successfully!');
-    }
 
 
 
@@ -307,9 +246,9 @@ class AdminController extends Controller
             'message'=>'Welcome Admin',
             'time' => $this->getTime(),
             'users' => User::all()->count(),
-            'payments' => Payment::where('status', 'success')->sum('amount'),
-            'listings' => Listing::all()->count(),
-            'agents' => Vendor::all()->count(),
+            'payments' => 0,
+            'listings' => 0,
+            'agents' => Project::all()->count(),
         ]);
     }
 

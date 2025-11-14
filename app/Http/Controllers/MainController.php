@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\{Payment,User,Project,Personal};
+use App\Models\{Payment,User,Project,Personal,Assessment};
 
 class MainController extends Controller
 {
@@ -67,6 +67,13 @@ class MainController extends Controller
         if ($proCheck && $proCheck->status == 3) {
             $pro = 3;
             $personal = 3;
+        } elseif ($proCheck && $proCheck->status != 3) {
+            $personal = 4;
+        }
+
+        $ass = Assessment::where('project_id', session()->get('current_project_id'))->first();
+        if ($ass) {
+            $pro = 4;
         }
 
         // return $personal;
@@ -78,6 +85,7 @@ class MainController extends Controller
             'personal' => $personal, // send all personals to frontend
             'pro' => $pro, // send all single project to frontend
             'procheck' => $proCheck, // send all single project to frontend
+            'ass' => $ass, // send all assessment project to frontend
         ]);
     }
 

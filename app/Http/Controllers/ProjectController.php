@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
-use App\Models\{Project,Plan,Personal,User};
+use App\Models\{Project,Plan,Personal,User,XAccount};
 
 class ProjectController extends Controller
 {
@@ -29,6 +29,29 @@ class ProjectController extends Controller
         return 'sent';
     }
 
+
+    // upload data
+    public function uploadData(Request $request){ 
+        $check = $request->session()->get('current_project_id') ?? 0;
+       // Get all projects for the logged-in user
+        $projects = Project::where('user_id', Auth::id())->get();
+
+        // If at least one project exists, store the first one's ID in session
+        if ($projects->isNotEmpty()) {
+            if($check == 0 ){
+                $request->session()->put('current_project_id', $projects->first()->id);
+            } else {
+                $request->session()->put('current_project_id', $check);
+            }
+        }
+
+        $x_account = XAccount::where('project_id',session()->get('current_project_id'))->first();
+
+        return inertia('UploadData',[
+            'info' => 'Upload Data',
+            'x_account' => $x_account
+        ]);
+    }
 
     public function verifyPhone(Request $request)
     {

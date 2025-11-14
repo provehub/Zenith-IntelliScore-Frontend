@@ -59,7 +59,7 @@ const billingItems = computed(() =>
 
     <!-- Social Media group -->
     <template v-if="socialItems.length">
-      <SidebarGroupLabel>Social Media</SidebarGroupLabel>
+      <SidebarGroupLabel>Data Bank</SidebarGroupLabel>
       <SidebarMenu>
         <SidebarMenuItem v-for="item in socialItems" :key="item.title">
           <SidebarMenuButton as-child :is-active="item.href === page.url">
