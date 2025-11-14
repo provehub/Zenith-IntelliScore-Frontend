@@ -1,11 +1,13 @@
 <script setup>
 import { computed,ref } from 'vue'
 import Modal from '@/Components/Modal.vue';
+import ProjectResultView from '@/components/ours/ProjectResultView.vue';
 
 const props = defineProps({
     vendor: [String, Number],
     extras: [String, Number],
     result: Object,
+    ass: Object,
 })
 
 const snapshots = computed(() =>
@@ -29,9 +31,10 @@ const closeModalDocuments = () => {
 </script>
 
 <template>
+  <!-- {{ props.ass }} -->
   <div class="max-w-lg mx-auto my-10 p-6 bg-white rounded-xl shadow">
-    <h1 class="text-2xl font-bold mb-4">Liveness Result for Agent #{{ vendor }}</h1>
-    <div v-if="!result" class="text-gray-500">No result found for this agent.</div>
+    <h1 class="text-2xl font-bold mb-4">Liveness Result for Account #{{ vendor }}</h1>
+    <div v-if="!result" class="text-gray-500">No result found for this account.</div>
     <div v-else>
       <div class="mb-3 text-gray-700">
         <div><b>Extras:</b> {{ extras }}</div>
@@ -62,5 +65,10 @@ const closeModalDocuments = () => {
 <Modal :show="confirmingDocuments" @close="closeModalDocuments" >
                     <img :src="`/storage/${dataFromButton}`" class="w-fit h-fit object-cover rounded border" alt="Snapshot" />
                 </Modal>
+
+
+                <!-- result scoring -->
+         <ProjectResultView :data="props.ass" />
+        <!-- result scoring -->
 
 </template>

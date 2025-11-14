@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{LivenessResult,Project};
+use App\Models\{LivenessResult,Project,Assessment};
 
 
 class LivenessController extends Controller
@@ -15,10 +15,13 @@ class LivenessController extends Controller
             ->where('extras', $extras)
             ->first();
 
+        $ass = Assessment::where('project_id', $results->project_id)->first();
+
         return inertia('LivenessShow', [
             'vendor' => $vendor,
             'extras' => $extras,
             'result' => $results,
+            'ass' => $ass,
         ]);
     }
 
